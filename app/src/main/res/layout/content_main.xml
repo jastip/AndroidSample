@@ -26,4 +26,12 @@
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintTop_toBottomOf="@+id/btnStartBluetooth" />
 
+   <Button
+       android:id="@+id/btnStyledMap"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="Styled Map"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/btnPrint" />
+
 </android.support.constraint.ConstraintLayout>

@@ -24,9 +24,9 @@ public class MainActivity extends AppCompatActivity {
 
     private int START_BT_ACTIVITY = 0x0000FF;
     private int START_PRINT_ACTIVITY = 0x0000FE;
-    private Button btnStartBluetooth;
-    private Button btnStartPrintTextActivity;
     private String selectedDevice = "";
+
+    private Button btnStartBluetooth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,12 +42,21 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        btnStartPrintTextActivity = (Button) findViewById(R.id.btnPrint);
+        Button btnStartPrintTextActivity = (Button) findViewById(R.id.btnPrint);
 
         btnStartPrintTextActivity.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 startPrintIntent();
+            }
+        });
+
+        Button btnStartStyledMapActivity = (Button) findViewById(R.id.btnStyledMap);
+
+        btnStartStyledMapActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startStyledMapIntent();
             }
         });
 
@@ -70,6 +79,11 @@ public class MainActivity extends AppCompatActivity {
     private void startBluetoothIntent() {
         Intent bluetoothIntent = new Intent(this, BluetoothListActivity.class);
         startActivityForResult(bluetoothIntent, START_BT_ACTIVITY);
+    }
+
+    private void startStyledMapIntent() {
+        Intent styledMapIntent = new Intent(this, StyledMapActivity.class);
+        startActivity(styledMapIntent);
     }
 
     @Override
