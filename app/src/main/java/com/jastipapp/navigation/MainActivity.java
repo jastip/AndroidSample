@@ -51,6 +51,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        Button btnStartPrintPaperangActivity = (Button) findViewById(R.id.btnPrintPaperang);
+
+        btnStartPrintPaperangActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startPrintPaperangIntent();
+            }
+        });
+
         Button btnStartStyledMapActivity = (Button) findViewById(R.id.btnStyledMap);
 
         btnStartStyledMapActivity.setOnClickListener(new View.OnClickListener() {
@@ -70,15 +80,21 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+    private void startBluetoothIntent() {
+        Intent bluetoothIntent = new Intent(this, BluetoothListActivity.class);
+        startActivityForResult(bluetoothIntent, START_BT_ACTIVITY);
+    }
+
     private void startPrintIntent() {
         Intent printIntent = new Intent(this, PrintActivity.class);
         printIntent.putExtra("DeviceAddress", selectedDevice);
         startActivityForResult(printIntent, START_PRINT_ACTIVITY);
     }
 
-    private void startBluetoothIntent() {
-        Intent bluetoothIntent = new Intent(this, BluetoothListActivity.class);
-        startActivityForResult(bluetoothIntent, START_BT_ACTIVITY);
+    private void startPrintPaperangIntent() {
+        Intent printPaperangIntent = new Intent(this, PrintPaperangActivity.class);
+        printPaperangIntent.putExtra("DeviceAddress", selectedDevice);
+        startActivityForResult(printPaperangIntent, START_PRINT_ACTIVITY);
     }
 
     private void startStyledMapIntent() {

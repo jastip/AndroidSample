@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".PrintPaperangActivity">
+
+    <Button
+        android:id="@+id/btnRegisterBT"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Init BT"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Button
+        android:id="@+id/btnScan"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Scan"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnRegisterBT" />
+
+    <Button
+        android:id="@+id/btnConnectToPrinter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Connect to Printer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnScan" />
+
+
+    <Button
+        android:id="@+id/btnPaperangTestPrint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Print"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnConnectToPrinter" />
+
+    <Button
+        android:id="@+id/btnDisconnectFromPrinter"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Disconnect from Printer"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnPaperangTestPrint" />
+
+
+</android.support.constraint.ConstraintLayout>
