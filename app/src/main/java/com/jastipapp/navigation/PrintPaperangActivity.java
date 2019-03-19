@@ -16,12 +16,14 @@ import android.widget.Button;
 
 import java.util.List;
 
+import cn.paperang.sdk.client.a;
 import cn.paperang.sdk.client.PaperangApi;
 import cn.paperang.sdk.client.errcode.DevConnStatus;
 import cn.paperang.sdk.btclient.callback.OnInitStatusListener;
 import cn.paperang.sdk.btclient.callback.OnBtDeviceListener;
 import cn.paperang.sdk.btclient.callback.OnBtStatusChangeListener;
 import cn.paperang.sdk.btclient.model.PaperangDevice;
+
 
 public class PrintPaperangActivity extends AppCompatActivity {
 
@@ -41,7 +43,7 @@ public class PrintPaperangActivity extends AppCompatActivity {
                 if (checkSelfPermission(Manifest.permission.ACCESS_COARSE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
                     //Log.d(TAG,"Context" + this.getApplicationContext().toString());
 
-                    PaperangApi.init(mContext.getApplicationContext(),"th.muangthai.aTR", new OnInitStatusListener() {
+                    PaperangApi.init(mContext.getApplicationContext(),mContext.getApplicationContext().getPackageName(), new OnInitStatusListener() {
                         @Override
                         public void initStatus(boolean b) {
                             Log.d(TAG, "Paperang init succeeded");
