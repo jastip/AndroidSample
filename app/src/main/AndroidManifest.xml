@@ -10,7 +10,11 @@
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
 
     <uses-feature
         android:name="android.hardware.bluetooth_le"
@@ -24,7 +28,12 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".PrintPaperangActivity"
+
+        <activity
+            android:name=".CameraActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".PrintPaperangActivity"
             android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
@@ -33,18 +42,24 @@
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
+        <meta-data
+            android:name="PAPERANG_AppId"
+            android:value="1546839514" />
+        <meta-data
+            android:name="PAPERANG_AppKey"
+            android:value="mm1996dc5232cb4e28" />
+        <meta-data
+            android:name="PAPERANG_AppSecret"
+            android:value="c01ccafe718846cdbddf49f1fcceb7d1" />
 
-        <meta-data android:name="PAPERANG_AppId" android:value="1546839514" />
-        <meta-data android:name="PAPERANG_AppKey" android:value="mm1996dc5232cb4e28" />
-        <meta-data android:name="PAPERANG_AppSecret" android:value="c01ccafe718846cdbddf49f1fcceb7d1" />
-        
         <provider
-            android:authorities="${applicationId}"
             android:name="android.support.v4.content.FileProvider"
-            android:grantUriPermissions="true"
-            android:exported="false">
-            <meta-data android:name="android.support.FILE_PROVIDER_PATHS"
-                android:resource="@xml/custom_file_provider"></meta-data>
+            android:authorities="${applicationId}"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/custom_file_provider" />
         </provider>
 
         <activity

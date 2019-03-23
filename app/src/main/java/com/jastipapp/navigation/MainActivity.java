@@ -108,6 +108,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btnCamera = (Button) findViewById(R.id.btnCamera);
+
+        btnCamera.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCameraIntent();
+            }
+        });
+
     }
 
     private void writeClipboard() {
@@ -148,6 +157,11 @@ public class MainActivity extends AppCompatActivity {
     private void startBluetoothIntent() {
         Intent bluetoothIntent = new Intent(this, BluetoothListActivity.class);
         startActivityForResult(bluetoothIntent, START_BT_ACTIVITY);
+    }
+
+    private void startCameraIntent() {
+        Intent cameraIntent = new Intent(this, CameraActivity.class);
+        startActivityForResult(cameraIntent, START_BT_ACTIVITY);
     }
 
     private void startPrintIntent() {
