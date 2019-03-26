@@ -66,4 +66,12 @@
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintTop_toBottomOf="@+id/btnWriteClipboard" />
 
+   <Button
+       android:id="@+id/btnAnimationWithLottie"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="Animation with Lottie"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/btnCamera" />
+
 </android.support.constraint.ConstraintLayout>

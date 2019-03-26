@@ -117,6 +117,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btnAnimationWithLottie = (Button) findViewById(R.id.btnAnimationWithLottie);
+
+        btnAnimationWithLottie.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startAnimationWithLottie();
+            }
+        });
+
     }
 
     private void writeClipboard() {
@@ -162,6 +171,11 @@ public class MainActivity extends AppCompatActivity {
     private void startCameraIntent() {
         Intent cameraIntent = new Intent(this, CameraActivity.class);
         startActivityForResult(cameraIntent, START_BT_ACTIVITY);
+    }
+
+    private void startAnimationWithLottie() {
+        Intent animationWithLottieIntent = new Intent(this, AnimationWithLottieActivity.class);
+        startActivity(animationWithLottieIntent);
     }
 
     private void startPrintIntent() {
