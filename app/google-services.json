@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "944963629466",
+    "firebase_url": "https://navigation-3211f.firebaseio.com",
+    "project_id": "navigation-3211f",
+    "storage_bucket": "navigation-3211f.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:944963629466:android:d95c4b284ad9f116",
+        "android_client_info": {
+          "package_name": "com.jastipapp.navigation"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "944963629466-0hm9nv2e4l175462mph07ib10eujp2t6.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGqwD2ck2ocMz90eLvE1dCtdItuF-QX9M"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
