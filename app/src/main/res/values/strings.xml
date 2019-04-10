@@ -8,4 +8,6 @@
     <string name="request_permission">This sample needs camera permission.</string>
     <string name="camera_error">This device doesn\'t support Camera2 API.</string>
     <string name="intro_message">Hello</string>
+    <string name="channel_name">Navigation</string>
+    <string name="channel_description">Navigation Description</string>
 </resources>

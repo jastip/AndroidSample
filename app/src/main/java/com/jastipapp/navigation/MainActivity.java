@@ -1,5 +1,9 @@
 package com.jastipapp.navigation;
 
+import android.app.Notification;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothManager;
 import android.content.ClipData;
@@ -10,6 +14,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.support.annotation.NonNull;
@@ -17,6 +22,8 @@ import android.support.annotation.Nullable;
 import android.support.design.widget.BottomSheetBehavior;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.NotificationCompat;
+import android.support.v4.app.NotificationManagerCompat;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -34,6 +41,8 @@ import java.io.OutputStream;
 public class MainActivity extends AppCompatActivity {
 
 
+    private static final String CHANNEL_ID = "Navigation";
+    private int notificationId = 1000;
     private int START_BT_ACTIVITY = 0x0000FF;
     private int START_PRINT_ACTIVITY = 0x0000FE;
     private String selectedDevice = "";
@@ -126,6 +135,65 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btnCameraKit = (Button) findViewById(R.id.btnCameraKit);
+
+        btnCameraKit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startCameraKitIntent();
+            }
+        });
+
+        Button btnNotification = (Button) findViewById(R.id.btnNotification);
+
+        btnNotification.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                showNotification("Hello", "world");
+            }
+        });
+
+        createNotificationChannel();
+
+    }
+
+    // In order to send notification on Android 28 or higher, need to crate notification channel, only one time (when application start) is okay, but
+    // we can also call repeatedly.
+    private void createNotificationChannel() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = getString(R.string.channel_name);
+            String description = getString(R.string.channel_description);
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID, name, importance);
+            channel.setDescription(description);
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
+    }
+
+    // URL Reference; https://developer.android.com/training/notify-user/build-notification.html
+    private void showNotification(String title, String message) {
+        Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            Notification.Builder builder = new Notification.Builder(this, CHANNEL_ID)
+                    .setSmallIcon(R.drawable.car)
+                    .setContentTitle(title)
+                    .setContentText(message)
+                    .setStyle(new Notification.BigTextStyle().bigText(message))
+                    .setContentIntent(pendingIntent)
+                    .setAutoCancel(true)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+
+            NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+            notificationManager.notify(notificationId, builder.build());
+        }
+
+
+
     }
 
     private void writeClipboard() {
@@ -171,6 +239,11 @@ public class MainActivity extends AppCompatActivity {
     private void startCameraIntent() {
         Intent cameraIntent = new Intent(this, CameraActivity.class);
         startActivityForResult(cameraIntent, START_BT_ACTIVITY);
+    }
+
+    private void startCameraKitIntent() {
+        Intent cameraKitIntent = new Intent(this, CameraKitActivity.class);
+        startActivity(cameraKitIntent);
     }
 
     private void startAnimationWithLottie() {

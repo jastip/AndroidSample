@@ -44,7 +44,17 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.ml.vision.FirebaseVision;
+import com.google.firebase.ml.vision.common.FirebaseVisionImage;
+import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
+import com.google.firebase.ml.vision.text.FirebaseVisionText;
+import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -219,9 +229,22 @@ public class JastipAppCameraFragment extends Fragment
     private ImageReader mImageReader;
 
     /**
+     * An {@link ImageReader} that handles OCR
+     */
+    private ImageReader mImageReaderOCR;
+
+    /**
+     * A {@link Handler} for running tasks in the background.
+     */
+    private Handler mBackgroundHandlerOCR;
+
+
+    /**
      * This is the output file for our picture.
      */
     private File mFile;
+
+    public Boolean isDetectingText = false;
 
     /**
      * This a callback object for the {@link ImageReader}. "onImageAvailable" will be called when a
@@ -235,6 +258,19 @@ public class JastipAppCameraFragment extends Fragment
             mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
         }
 
+    };
+
+    /**
+     * This a callback object for the {@link ImageReader}. "onImageAvailable" will be called when a
+     * still image is ready to be saved.
+     */
+    private final ImageReader.OnImageAvailableListener mOnImageOCRAvailableListener
+            = new ImageReader.OnImageAvailableListener() {
+
+        @Override
+        public void onImageAvailable(ImageReader reader) {
+            mBackgroundHandler.post(new ImageTextRecognizer(reader.acquireNextImage()));
+        }
     };
 
     /**
@@ -279,6 +315,8 @@ public class JastipAppCameraFragment extends Fragment
      */
     private int mSensorOrientation;
 
+    private TextView mTextRecognized;
+
     /**
      * A {@link CameraCaptureSession.CaptureCallback} that handles events related to JPEG capture.
      */
@@ -289,6 +327,7 @@ public class JastipAppCameraFragment extends Fragment
             switch (mState) {
                 case STATE_PREVIEW: {
                     // We have nothing to do when the camera preview is working normally.
+                    // detectText();
                     break;
                 }
                 case STATE_WAITING_LOCK: {
@@ -426,6 +465,9 @@ public class JastipAppCameraFragment extends Fragment
     @Override
     public void onViewCreated(final View view, Bundle savedInstanceState) {
         view.findViewById(R.id.picture).setOnClickListener(this);
+
+        mTextRecognized = (TextView) view.findViewById(R.id.txtRecognized);
+
         mTextureView = (AutoFitTextureView) view.findViewById(R.id.texture);
         mTextureView.setOnTouchListener(this);
     }
@@ -512,10 +554,18 @@ public class JastipAppCameraFragment extends Fragment
                 Size largest = Collections.max(
                         Arrays.asList(map.getOutputSizes(ImageFormat.JPEG)),
                         new CompareSizesByArea());
+
                 mImageReader = ImageReader.newInstance(largest.getWidth(), largest.getHeight(),
                         ImageFormat.JPEG, /*maxImages*/2);
+
                 mImageReader.setOnImageAvailableListener(
                         mOnImageAvailableListener, mBackgroundHandler);
+
+                mImageReaderOCR = ImageReader.newInstance(640, 480,
+                        ImageFormat.YUV_420_888, /*maxImages*/1);
+
+                mImageReaderOCR.setOnImageAvailableListener(
+                        mOnImageOCRAvailableListener, mBackgroundHandler);
 
                 // Find out if we need to swap dimension to get the preview size relative to sensor
                 // coordinate.
@@ -643,6 +693,10 @@ public class JastipAppCameraFragment extends Fragment
                 mImageReader.close();
                 mImageReader = null;
             }
+            if (null != mImageReaderOCR) {
+                mImageReaderOCR.close();
+                mImageReaderOCR = null;
+            }
         } catch (InterruptedException e) {
             throw new RuntimeException("Interrupted while trying to lock camera closing.", e);
         } finally {
@@ -656,7 +710,10 @@ public class JastipAppCameraFragment extends Fragment
     private void startBackgroundThread() {
         mBackgroundThread = new HandlerThread("CameraBackground");
         mBackgroundThread.start();
+
         mBackgroundHandler = new Handler(mBackgroundThread.getLooper());
+
+        mBackgroundHandlerOCR = new Handler(mBackgroundThread.getLooper());
     }
 
     /**
@@ -668,6 +725,7 @@ public class JastipAppCameraFragment extends Fragment
             mBackgroundThread.join();
             mBackgroundThread = null;
             mBackgroundHandler = null;
+            mBackgroundHandlerOCR = null;
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -691,9 +749,10 @@ public class JastipAppCameraFragment extends Fragment
             mPreviewRequestBuilder
                     = mCameraDevice.createCaptureRequest(CameraDevice.TEMPLATE_PREVIEW);
             mPreviewRequestBuilder.addTarget(surface);
+            mPreviewRequestBuilder.addTarget(mImageReaderOCR.getSurface());
 
             // Here, we create a CameraCaptureSession for camera preview.
-            mCameraDevice.createCaptureSession(Arrays.asList(surface, mImageReader.getSurface()),
+            mCameraDevice.createCaptureSession(Arrays.asList(surface, mImageReader.getSurface(), mImageReaderOCR.getSurface()),
                     new CameraCaptureSession.StateCallback() {
 
                         @Override
@@ -710,7 +769,7 @@ public class JastipAppCameraFragment extends Fragment
                                 mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_MODE,
                                         CaptureRequest.CONTROL_AF_MODE_CONTINUOUS_PICTURE);
                                 // Flash is automatically enabled when necessary.
-                                setAutoFlash(mPreviewRequestBuilder);
+                                // setAutoFlash(mPreviewRequestBuilder);
 
                                 // Finally, we start displaying the camera preview.
                                 mPreviewRequest = mPreviewRequestBuilder.build();
@@ -808,6 +867,9 @@ public class JastipAppCameraFragment extends Fragment
         }
     }
 
+
+
+
     /**
      * Capture a still picture. This method should be called when we get a response in
      * {@link #mCaptureCallback} from both {@link #lockFocus()}.
@@ -876,7 +938,7 @@ public class JastipAppCameraFragment extends Fragment
             // Reset the auto-focus trigger
             mPreviewRequestBuilder.set(CaptureRequest.CONTROL_AF_TRIGGER,
                     CameraMetadata.CONTROL_AF_TRIGGER_CANCEL);
-            setAutoFlash(mPreviewRequestBuilder);
+            // setAutoFlash(mPreviewRequestBuilder);
             mCaptureSession.capture(mPreviewRequestBuilder.build(), mCaptureCallback,
                     mBackgroundHandler);
             // After this, the camera will go back to the normal state of preview.
@@ -1017,6 +1079,56 @@ public class JastipAppCameraFragment extends Fragment
         }
 
     }
+
+    public static class ImageTextRecognizer implements Runnable {
+
+        /**
+         * The JPEG image
+         */
+        private final Image mImage;
+
+
+        ImageTextRecognizer(Image image) {
+            mImage = image;
+        }
+
+        @Override
+        public void run() {
+            try {
+
+
+                final  FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
+                        .getOnDeviceTextRecognizer();
+
+                FirebaseVisionImage image = FirebaseVisionImage.fromMediaImage(mImage, 0);
+
+                Task<FirebaseVisionText> result =
+                        detector.processImage(image)
+                                .addOnSuccessListener(new OnSuccessListener<FirebaseVisionText>() {
+                                    @Override
+                                    public void onSuccess(FirebaseVisionText firebaseVisionText) {
+                                        Log.d(TAG, "Detected Text: " + firebaseVisionText.getText());
+                                    }
+                                })
+                                .addOnFailureListener(
+                                        new OnFailureListener() {
+                                            @Override
+                                            public void onFailure(@NonNull Exception e) {
+                                                Log.d(TAG, e.toString());
+                                            }
+                                        });
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            finally {
+                mImage.close();
+            }
+        }
+
+    }
+
 
     /**
      * Compares two {@code Size}s based on their areas.

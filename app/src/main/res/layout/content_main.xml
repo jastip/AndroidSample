@@ -67,11 +67,27 @@
        app:layout_constraintTop_toBottomOf="@+id/btnWriteClipboard" />
 
    <Button
+       android:id="@+id/btnCameraKit"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="Camera Kit"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/btnCamera" />
+
+   <Button
        android:id="@+id/btnAnimationWithLottie"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
        android:text="Animation with Lottie"
        app:layout_constraintStart_toStartOf="parent"
-       app:layout_constraintTop_toBottomOf="@+id/btnCamera" />
+       app:layout_constraintTop_toBottomOf="@+id/btnCameraKit" />
+
+    <Button
+        android:id="@+id/btnNotification"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Notification"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/btnAnimationWithLottie" />
 
 </android.support.constraint.ConstraintLayout>
