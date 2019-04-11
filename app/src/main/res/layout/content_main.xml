@@ -62,7 +62,7 @@
        android:id="@+id/btnCamera"
        android:layout_width="match_parent"
        android:layout_height="wrap_content"
-       android:text="Camera"
+       android:text="Camera2 Touch Focus"
        app:layout_constraintStart_toStartOf="parent"
        app:layout_constraintTop_toBottomOf="@+id/btnWriteClipboard" />
 
@@ -83,11 +83,19 @@
        app:layout_constraintTop_toBottomOf="@+id/btnCameraKit" />
 
     <Button
-        android:id="@+id/btnNotification"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Notification"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/btnAnimationWithLottie" />
+    android:id="@+id/btnNotification"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:text="Notification"
+    app:layout_constraintStart_toStartOf="parent"
+    app:layout_constraintTop_toBottomOf="@+id/btnAnimationWithLottie" />
+
+   <Button
+       android:id="@+id/btnSaveData"
+       android:layout_width="match_parent"
+       android:layout_height="wrap_content"
+       android:text="Save Data"
+       app:layout_constraintStart_toStartOf="parent"
+       app:layout_constraintTop_toBottomOf="@+id/btnNotification" />
 
 </android.support.constraint.ConstraintLayout>

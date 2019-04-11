@@ -153,6 +153,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btnSaveDataActivity = (Button) findViewById(R.id.btnSaveData);
+
+        btnSaveDataActivity.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startSaveData();
+            }
+        });
+
+        // Create channel for notification
         createNotificationChannel();
 
     }
@@ -238,12 +248,17 @@ public class MainActivity extends AppCompatActivity {
 
     private void startCameraIntent() {
         Intent cameraIntent = new Intent(this, CameraActivity.class);
-        startActivityForResult(cameraIntent, START_BT_ACTIVITY);
+        startActivity(cameraIntent);
     }
 
     private void startCameraKitIntent() {
         Intent cameraKitIntent = new Intent(this, CameraKitActivity.class);
         startActivity(cameraKitIntent);
+    }
+
+    private void startSaveData() {
+        Intent saveDataIntent = new Intent(this, SaveDataActivity.class);
+        startActivity(saveDataIntent);
     }
 
     private void startAnimationWithLottie() {

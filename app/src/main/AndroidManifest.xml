@@ -27,13 +27,17 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".CameraKitActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".SaveDataActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".CameraKitActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
 
         <meta-data
             android:name="com.google.firebase.ml.vision.DEPENDENCIES"
             android:value="ocr, label" />
 
-        <activity android:name=".AnimationWithLottieActivity"
+        <activity
+            android:name=".AnimationWithLottieActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CameraActivity"
