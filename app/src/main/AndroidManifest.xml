@@ -27,7 +27,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".SaveDataActivity" android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity android:name=".PhotoViewerActivity"
+            android:theme="@style/AppTheme.NoActionBar"></activity>
+        <activity
+            android:name=".SaveDataActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".CameraKitActivity"
             android:theme="@style/AppTheme.NoActionBar" />

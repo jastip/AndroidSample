@@ -6,6 +6,7 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
 import android.graphics.ImageFormat;
@@ -30,6 +31,7 @@ import android.media.ImageReader;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.HandlerThread;
+import android.provider.ContactsContract;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.DialogFragment;
@@ -56,7 +58,11 @@ import com.google.firebase.ml.vision.common.FirebaseVisionImageMetadata;
 import com.google.firebase.ml.vision.text.FirebaseVisionText;
 import com.google.firebase.ml.vision.text.FirebaseVisionTextRecognizer;
 
+import java.io.BufferedInputStream;
+import java.io.DataInputStream;
 import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
@@ -867,6 +873,11 @@ public class JastipAppCameraFragment extends Fragment
         }
     }
 
+    private void startPhotoViewer(File file) {
+        Intent photoViewerIntent = new Intent(this.getContext(), PhotoViewerActivity.class);
+        photoViewerIntent.putExtra("File", file.getAbsolutePath());
+        startActivity(photoViewerIntent);
+    }
 
 
 
@@ -902,6 +913,7 @@ public class JastipAppCameraFragment extends Fragment
                                                @NonNull CaptureRequest request,
                                                @NonNull TotalCaptureResult result) {
                     showToast("Saved: " + mFile);
+                    startPhotoViewer(mFile);
                     Log.d(TAG, mFile.toString());
                     unlockFocus();
                 }
