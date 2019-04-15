@@ -90,6 +90,7 @@ public class PhotoViewerActivity extends AppCompatActivity {
 
     }
 
+    // This method has not been used.
     @SuppressLint("NewApi")
     Bitmap BlurImage (Bitmap input)
     {
@@ -99,7 +100,7 @@ public class PhotoViewerActivity extends AppCompatActivity {
             Allocation alloc = Allocation.createFromBitmap(rsScript, input);
 
             ScriptIntrinsicBlur blur = ScriptIntrinsicBlur.create(rsScript, Element.U8_4(rsScript));
-            blur.setRadius(20);
+            blur.setRadius(21);
             blur.setInput(alloc);
 
             Bitmap result = Bitmap.createBitmap(input.getWidth(), input.getHeight(), Bitmap.Config.ARGB_8888);
@@ -119,6 +120,7 @@ public class PhotoViewerActivity extends AppCompatActivity {
     }
 
     private void detectText() {
+        mImage = mImage.
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(mImage);
 
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
@@ -149,14 +151,16 @@ public class PhotoViewerActivity extends AppCompatActivity {
                                     List<RecognizedLanguage> elementLanguages = element.getRecognizedLanguages();
                                     Point[] elementCornerPoints = element.getCornerPoints();
                                     Rect elementFrame = element.getBoundingBox();
-                                    Bitmap srcBitmap = Bitmap.createBitmap(mImage, elementFrame.left, elementFrame.top, elementFrame.width(), elementFrame.height());
-                                    Bitmap blurBitmap = BlurImage(srcBitmap);
+                                    int x = elementFrame.left + (elementFrame.width() / 2);
+                                    int y = elementFrame.top + 5;
+                                    int pixel = mImage.getPixel(x, y);
                                     Canvas canvas = new Canvas(mImage);
                                     Paint paint = new Paint();
-                                    paint.setStyle(Paint.Style.STROKE);
-                                    paint.setColor(Color.GREEN);
+                                    paint.setStyle(Paint.Style.FILL);
+                                    paint.setStrokeWidth(3);
+                                    paint.setColor(pixel);
                                     paint.setAntiAlias(true);
-                                    canvas.drawBitmap(srcBitmap, elementFrame.left, elementFrame.top, null);
+                                    //canvas.drawBitmap(blurBitmap, elementFrame.left, elementFrame.top, null);
                                     canvas.drawRect(elementFrame, paint);
 
                                 }
