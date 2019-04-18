@@ -27,8 +27,22 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="android:icon">
-        <activity android:name=".PhotoViewerActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+
+        <service android:name=".MyInputMethodService"
+            android:permission="android.permission.BIND_INPUT_METHOD">
+            <intent-filter>
+                <action android:name="android.view.InputMethod" />
+            </intent-filter>
+
+            <meta-data android:name="android.view.im"
+                android:resource="@xml/method" />
+
+        </service>
+
+        <activity android:name=".AnimationActivity"></activity>
+        <activity
+            android:name=".PhotoViewerActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
         <activity
             android:name=".SaveDataActivity"
             android:theme="@style/AppTheme.NoActionBar" />

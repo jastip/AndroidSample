@@ -162,8 +162,19 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btnAnimation = (Button) findViewById(R.id.btnAnimation);
+
+        btnAnimation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startAnimation();
+            }
+        });
+
         // Create channel for notification
         createNotificationChannel();
+
+
 
     }
 
@@ -210,6 +221,11 @@ public class MainActivity extends AppCompatActivity {
         ClipboardManager clipboard = (ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
         ClipData clip = ClipData.newPlainText("UrlJastip", "http://www.google.com");
         clipboard.setPrimaryClip(clip);
+    }
+
+    private void startAnimation() {
+        Intent animationIntent = new Intent(this, AnimationActivity.class);
+        startActivity(animationIntent);
     }
 
     private void startSharing() {

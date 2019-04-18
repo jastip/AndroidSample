@@ -120,7 +120,6 @@ public class PhotoViewerActivity extends AppCompatActivity {
     }
 
     private void detectText() {
-        mImage = mImage.
         FirebaseVisionImage image = FirebaseVisionImage.fromBitmap(mImage);
 
         FirebaseVisionTextRecognizer detector = FirebaseVision.getInstance()
