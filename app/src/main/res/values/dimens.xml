@@ -1,3 +1,7 @@
 <resources>
     <dimen name="fab_margin">16dp</dimen>
+    <dimen name="key_height_default">45.0dip</dimen>
+    <dimen name="key_preview_text_size">36.0sp</dimen>
+    <dimen name="tiny_margin">4.0dip</dimen>
+    <dimen name="default_rounded_radius">3.0dip</dimen>
 </resources>

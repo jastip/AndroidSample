@@ -1,0 +1,3 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Keyboard android:background="@color/pale_grey_two" android:keyBackground="@color/pale_grey" android:keyWidth="13.0%p" android:keyHeight="60.0dip" android:horizontalGap="0.0dip" android:verticalGap="0.0dip"
+    xmlns:android="http://schemas.android.com/apk/res/android" />

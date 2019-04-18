@@ -1,10 +1,3 @@
-<TextView
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center"
-    android:background="@android:color/white"
-    android:textColor="@color/colorPrimary"
-    android:textAlignment="center"
-    android:textSize="30sp">
-</TextView>
+<?xml version="1.0" encoding="utf-8"?>
+<TextView android:textSize="@dimen/key_preview_text_size" android:textColor="@color/brownish_grey" android:gravity="center|top" android:background="@drawable/rounded_background_grey" android:paddingLeft="@dimen/tiny_margin" android:paddingRight="@dimen/tiny_margin" android:layout_width="fill_parent" android:layout_height="fill_parent" android:shadowRadius="0.0"
+    xmlns:android="http://schemas.android.com/apk/res/android" />
