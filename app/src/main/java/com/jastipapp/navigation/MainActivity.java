@@ -171,11 +171,25 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        Button btnLayout = (Button) findViewById(R.id.btnLayout);
+
+        btnLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startLayout();
+            }
+        });
+
         // Create channel for notification
         createNotificationChannel();
 
 
 
+    }
+
+    private void startLayout() {
+        Intent layoutIntent = new Intent(this, LayoutActivity.class);
+        startActivity(layoutIntent);
     }
 
     // In order to send notification on Android 28 or higher, need to crate notification channel, only one time (when application start) is okay, but
